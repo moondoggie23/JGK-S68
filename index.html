@@ -485,7 +485,7 @@ document.querySelectorAll('#nameseg button').forEach(btn=>btn.onclick=()=>{
 $('sp').oninput=e=>{speed=+e.target.value;$('spv').textContent=fmtSp(speed)};
 let pt=null;
 let refreshing=false,tagFlash=0,toastTimer=null;
-$('b-refresh').onclick=()=>{if(refreshing)return;refreshing=true;const b=$('b-refresh');b.classList.add('spin');const ld=document.getElementById('loading');ld.style.top=topH0+'px';ld.style.bottom=(uiH0+(vh-topH0-uiH0)/2)+'px';ld.classList.add('show');
+$('b-refresh').onclick=()=>{if(refreshing)return;refreshing=true;const b=$('b-refresh');b.classList.add('spin');const ld=document.getElementById('loading');ld.style.top=topH0+'px';ld.style.bottom=uiH0+'px';/* 上下バーの間の中央(タグ表示と重ならない位置) */ld.classList.add('show');
   setTimeout(()=>{b.classList.remove('spin');ld.classList.remove('show');refreshing=false;if(!REFRESH_FAIL)tagFlash=performance.now();
     const n=new Date(),t=$('toast');$('toast-t').textContent=[n.getHours(),n.getMinutes(),n.getSeconds()].map(v=>String(v).padStart(2,'0')).join(':');
     t.classList.toggle('fail',REFRESH_FAIL);document.getElementById('toast-msg').textContent=REFRESH_FAIL?'取得に失敗しました':'最新の位置情報を取得しました';
