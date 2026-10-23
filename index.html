@@ -158,6 +158,10 @@ input[type=range]{flex:1;min-width:0;accent-color:var(--me)}
 .jpname{font-family:var(--jp)!important;letter-spacing:.08em}
 
 @media (max-width:479px){
+  /* スマホ: 画面の下端まで埋める。ホーム画面アプリ(全画面)でiOSが高さを短く返す不具合への保険として背景も下部バーと同色に */
+  html,body{background:var(--ink)}
+  body{align-items:flex-start}
+
   .sb,.homebar{display:none}
   .top{padding-top:max(8px,env(safe-area-inset-top,0px))}
 }
@@ -351,7 +355,16 @@ let progress=TAG_START,speed=1,playing=false,last=null,seeking=false;
 
 /* sizing */
 let vw=0,vh=0,dpr=1,S=1,OX=0,OY=0;
+/* スマホのホーム画面アプリ(全画面)ではiOSが画面の高さをステータスバー分短く返すことがあるため、画面の実寸まで広げる */
+function fitHeight(){
+  if(innerWidth>=480){wrap.style.height='';return}
+  const sa=navigator.standalone===true||(matchMedia&&matchMedia('(display-mode: standalone)').matches);
+  const portrait=innerHeight>=innerWidth,sw=screen.width,sh=screen.height;
+  const full=portrait?Math.max(sw,sh):Math.min(sw,sh);
+  wrap.style.height=(sa&&full>innerHeight?full:innerHeight)+'px';
+}
 function resize(){
+  fitHeight();
   wrap.style.transform='';
   if(innerWidth>=480){const k=Math.min(1,(innerHeight-60)/896,(innerWidth-60)/414);wrap.style.transform=k<1?`scale(${k})`:''}
   vw=wrap.clientWidth;vh=wrap.clientHeight;dpr=Math.min(devicePixelRatio||1,3);
